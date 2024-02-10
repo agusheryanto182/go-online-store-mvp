@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/agusheryanto182/go-online-store-mvp/domain/auth"
+	"github.com/agusheryanto182/go-online-store-mvp/domain/cart"
 	"github.com/agusheryanto182/go-online-store-mvp/domain/category"
 	"github.com/agusheryanto182/go-online-store-mvp/domain/product"
 	"github.com/agusheryanto182/go-online-store-mvp/domain/user"
@@ -31,4 +32,9 @@ func CategoryRoute(app *fiber.App, handler category.CategoryHandlerInterface, jw
 	categoryGroup.Patch("/:id", middleware.Protected(jwtService, userService), handler.UpdateCategory)
 	categoryGroup.Delete("/:id", middleware.Protected(jwtService, userService), handler.DeleteCategory)
 	categoryGroup.Get("", handler.GetAllCategory)
+}
+
+func CartRouter(app *fiber.App, handler cart.CartHandlerInterface, jwtService jwt.IJwt, userService user.UserServiceInterface) {
+	cartGroup := app.Group("api/cart")
+	cartGroup.Post("/", middleware.Protected(jwtService, userService), handler.AddCartItem)
 }

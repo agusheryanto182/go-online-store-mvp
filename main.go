@@ -21,6 +21,10 @@ import (
 	rCategory "github.com/agusheryanto182/go-online-store-mvp/domain/category/repository"
 	sCategory "github.com/agusheryanto182/go-online-store-mvp/domain/category/service"
 
+	hCart "github.com/agusheryanto182/go-online-store-mvp/domain/cart/handler"
+	rCart "github.com/agusheryanto182/go-online-store-mvp/domain/cart/repository"
+	sCart "github.com/agusheryanto182/go-online-store-mvp/domain/cart/service"
+
 	"github.com/agusheryanto182/go-online-store-mvp/helper/database"
 	"github.com/agusheryanto182/go-online-store-mvp/helper/hashing"
 	Njwt "github.com/agusheryanto182/go-online-store-mvp/helper/jwt"
@@ -57,9 +61,14 @@ func main() {
 	productService := sProduct.NewProductService(productRepo, categoryService)
 	productHandler := hProduct.NewProductService(productService)
 
+	cartRepo := rCart.NewCartRepository(DB)
+	cartService := sCart.NewCartService(cartRepo, productService)
+	cartHandler := hCart.NewCartHandler(cartService)
+
 	routes.AuthRoute(app, authHandler)
 	routes.CategoryRoute(app, categoryHandler, jwt, userService)
 	routes.ProductRoute(app, productHandler, jwt, userService)
+	routes.CartRouter(app, cartHandler, jwt, userService)
 
 	addr := fmt.Sprintf(":%d", bootConfig.AppPort)
 	if err := app.Listen(addr).Error(); err != addr {
