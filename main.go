@@ -13,6 +13,14 @@ import (
 	rAuth "github.com/agusheryanto182/go-online-store-mvp/domain/auth/repository"
 	sAuth "github.com/agusheryanto182/go-online-store-mvp/domain/auth/service"
 
+	hProduct "github.com/agusheryanto182/go-online-store-mvp/domain/product/handler"
+	rProduct "github.com/agusheryanto182/go-online-store-mvp/domain/product/repository"
+	sProduct "github.com/agusheryanto182/go-online-store-mvp/domain/product/service"
+
+	hCategory "github.com/agusheryanto182/go-online-store-mvp/domain/category/handler"
+	rCategory "github.com/agusheryanto182/go-online-store-mvp/domain/category/repository"
+	sCategory "github.com/agusheryanto182/go-online-store-mvp/domain/category/service"
+
 	"github.com/agusheryanto182/go-online-store-mvp/helper/database"
 	"github.com/agusheryanto182/go-online-store-mvp/helper/hashing"
 	Njwt "github.com/agusheryanto182/go-online-store-mvp/helper/jwt"
@@ -23,7 +31,7 @@ import (
 
 func main() {
 	app := fiber.New(fiber.Config{
-		AppName: "E-commerce MVP",
+		AppName: "Online Store MVP",
 	})
 
 	bootConfig := config.BootConfig()
@@ -41,7 +49,17 @@ func main() {
 	authService := sAuth.NewAuthService(authRepo, userService, jwt, hash)
 	authHandler := hAuth.NewAuthHandler(authService)
 
+	categoryRepo := rCategory.NewCategoryRepository(DB)
+	categoryService := sCategory.NewCategoryService(categoryRepo)
+	categoryHandler := hCategory.NewCategoryHandler(categoryService)
+
+	productRepo := rProduct.NewProductRepository(DB)
+	productService := sProduct.NewProductService(productRepo, categoryService)
+	productHandler := hProduct.NewProductService(productService)
+
 	routes.AuthRoute(app, authHandler)
+	routes.CategoryRoute(app, categoryHandler, jwt, userService)
+	routes.ProductRoute(app, productHandler, jwt, userService)
 
 	addr := fmt.Sprintf(":%d", bootConfig.AppPort)
 	if err := app.Listen(addr).Error(); err != addr {
