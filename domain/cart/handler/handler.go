@@ -59,7 +59,7 @@ func (h *CartHandlerImpl) DeleteCartItem(c *fiber.Ctx) error {
 	if currentUser.Role != "user" {
 		return response.SendStatusForbidden(c, "Access denied: you are admin, not user")
 	}
-	id, err := strconv.Atoi(c.Params("id"))
+	id, err := strconv.Atoi(c.Params("product_id"))
 	if err != nil {
 		return response.SendStatusBadRequest(c, "invalid id")
 	}

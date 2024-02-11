@@ -8,7 +8,6 @@ type UserRepositoryInterface interface {
 	FindID(ID int) (*entities.User, error)
 	FindEmail(email string) (*entities.User, error)
 	FindUsername(username string) (*entities.User, error)
-	FindGenderByID(genderID int) (*entities.User, error)
 }
 
 type UserServiceInterface interface {

@@ -40,14 +40,14 @@ func (r *CartRepositoryImpl) GetCartByUserId(userId int) (*entities.Cart, error)
 
 func (r *CartRepositoryImpl) GetCartItemByProductID(cartID, productId int) (*entities.CartItem, error) {
 	carts := entities.CartItem{}
-	if err := r.db.Where("id = ? AND product_id = ?", cartID, productId).First(&carts).Error; err != nil {
+	if err := r.db.Where("cart_id = ? AND product_id = ?", cartID, productId).First(&carts).Error; err != nil {
 		return nil, err
 	}
 	return &carts, nil
 }
 
 func (r *CartRepositoryImpl) UpdateCartItem(cartItem *entities.CartItem) error {
-	if err := r.db.Save(&cartItem).Error; err != nil {
+	if err := r.db.Save(cartItem).Error; err != nil {
 		return err
 	}
 	return nil
@@ -76,8 +76,7 @@ func (r *CartRepositoryImpl) FindCart(userID int) (*entities.Cart, error) {
 		Preload("CartItems", func(db *gorm.DB) *gorm.DB {
 			return db.Select("id, cart_id, product_id, quantity, total_price").
 				Preload("Product", func(db *gorm.DB) *gorm.DB {
-					return db.Select("id, name, price").
-						Preload("ProductPhotos")
+					return db.Select("id, name, price")
 				})
 		}).Where("user_id = ?", userID).First(&carts).Error; err != nil {
 		return nil, err
@@ -101,6 +100,7 @@ func (r *CartRepositoryImpl) RemoveProductFromCart(userID, productID int) error 
 	if cartItem.Id == 0 {
 		return nil
 	}
+
 	if err := r.db.Delete(&cartItem).Error; err != nil {
 		return err
 	}

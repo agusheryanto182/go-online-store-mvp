@@ -12,7 +12,7 @@ type CartItemFormatter struct {
 type CartFormatter struct {
 	ID         int                 `json:"id"`
 	UserID     int                 `json:"user_id"`
-	GrantTotal int                 `json:"grant_total"`
+	GrantTotal int                 `json:"grand_total"`
 	CartItems  []CartItemFormatter `json:"cart_items"`
 }
 

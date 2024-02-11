@@ -25,10 +25,8 @@ func InitialDB(cnf config.Config) *gorm.DB {
 func TableMigration(db *gorm.DB) {
 	err := db.AutoMigrate(
 		entities.User{},
-		entities.Gender{},
 		entities.Category{},
 		entities.Product{},
-		entities.ProductPhotos{},
 		entities.Cart{},
 		entities.CartItem{},
 		entities.Order{},

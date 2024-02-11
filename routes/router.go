@@ -38,10 +38,10 @@ func CartRouter(app *fiber.App, handler cart.CartHandlerInterface, jwtService jw
 	cartGroup := app.Group("api/cart")
 	cartGroup.Post("/", middleware.Protected(jwtService, userService), handler.AddCartItem)
 	cartGroup.Get("/", middleware.Protected(jwtService, userService), handler.GetCart)
-	cartGroup.Delete("/:id", middleware.Protected(jwtService, userService), handler.DeleteCartItem)
+	cartGroup.Delete("/:product_id", middleware.Protected(jwtService, userService), handler.DeleteCartItem)
 }
 
 func OrderRoute(app *fiber.App, handler order.OrderHandlerInterface, jwtService jwt.IJwt, userService user.UserServiceInterface) {
 	orderGroup := app.Group("api/order")
-	orderGroup.Post("/", middleware.Protected(jwtService, userService), handler.CreateOrderFromCart)
+	orderGroup.Post("/", middleware.Protected(jwtService, userService), handler.CreateOrderFromProduct)
 }

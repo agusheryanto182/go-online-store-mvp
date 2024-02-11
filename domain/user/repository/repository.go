@@ -16,7 +16,7 @@ func NewUserRepository(DB *gorm.DB) user.UserRepositoryInterface {
 
 func (r *UserRepositoryImpl) FindID(ID int) (*entities.User, error) {
 	var user *entities.User
-	if err := r.DB.Preload("Gender").Where("id = ? AND deleted_at IS NULL", ID).First(&user).Error; err != nil {
+	if err := r.DB.Where("id = ? AND deleted_at IS NULL", ID).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return user, nil
@@ -36,12 +36,4 @@ func (r *UserRepositoryImpl) FindUsername(username string) (*entities.User, erro
 		return nil, err
 	}
 	return user, nil
-}
-
-func (r *UserRepositoryImpl) FindGenderByID(GenderID int) (*entities.User, error) {
-	var gender entities.User
-	if err := r.DB.First(&gender, GenderID).Error; err != nil {
-		return nil, err
-	}
-	return &gender, nil
 }

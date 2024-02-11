@@ -16,7 +16,7 @@ func NewOrderHandler(orderService order.OrderServiceInterface) order.OrderHandle
 	return &OrderHandlerImpl{orderService: orderService}
 }
 
-func (h *OrderHandlerImpl) CreateOrderFromCart(c *fiber.Ctx) error {
+func (h *OrderHandlerImpl) CreateOrderFromProduct(c *fiber.Ctx) error {
 	var req *dto.CreateOrderRequest
 
 	currentUser, _ := c.Locals("CurrentUser").(*entities.User)
@@ -30,7 +30,7 @@ func (h *OrderHandlerImpl) CreateOrderFromCart(c *fiber.Ctx) error {
 
 	req.User = currentUser
 
-	newOrder, err := h.orderService.CreateOrderFromCart(currentUser.ID, req)
+	newOrder, err := h.orderService.CreateOrderFromProduct(currentUser.ID, req)
 	if err != nil {
 		return response.SendStatusBadRequest(c, "failed to create order : "+err.Error())
 	}

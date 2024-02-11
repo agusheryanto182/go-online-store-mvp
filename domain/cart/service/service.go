@@ -34,8 +34,8 @@ func (s *CartServiceImpl) AddCartItems(userId int, request *dto.AddCartItemsRequ
 		}
 	}
 
-	existingCartItem, err := s.cartRepository.GetCartItemByProductID(carts.Id, request.ProductID)
-	if err == nil && existingCartItem != nil {
+	existingCartItem, _ := s.cartRepository.GetCartItemByProductID(carts.Id, request.ProductID)
+	if existingCartItem != nil {
 		existingCartItem.Quantity += request.Quantity
 		existingCartItem.TotalPrice = existingCartItem.Quantity * existingCartItem.Price
 
@@ -104,12 +104,12 @@ func (s *CartServiceImpl) GetCart(userID int) (*entities.Cart, error) {
 func (s *CartServiceImpl) RemoveProductFromCart(userID, productID int) error {
 	isProductInCart := s.cartRepository.IsProductInCart(userID, productID)
 	if !isProductInCart {
-		return errors.New("the product with ID " + strconv.Itoa(userID) + " is not on user")
+		return errors.New("the product with ID " + strconv.Itoa(productID) + " is not on user")
 	}
 
 	getCart, _ := s.cartRepository.GetCartByUserId(userID)
 
-	getCartItem, _ := s.cartRepository.GetCartItemByProductID(userID, productID)
+	getCartItem, _ := s.cartRepository.GetCartItemByProductID(getCart.Id, productID)
 
 	newGrandTotal := getCart.GrandTotal - getCartItem.TotalPrice
 
