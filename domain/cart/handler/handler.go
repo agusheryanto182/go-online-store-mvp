@@ -20,7 +20,7 @@ func NewCartHandler(cartService cart.CartServiceInterface) cart.CartHandlerInter
 }
 
 func (h *CartHandlerImpl) AddCartItem(c *fiber.Ctx) error {
-	currentUser, _ := c.Locals("CurrentUser").(*entities.User)
+	currentUser := c.Locals("CurrentUser").(*entities.User)
 	if currentUser.Role != "user" {
 		return response.SendStatusForbidden(c, "Access denied: you are admin, not user")
 	}
@@ -41,7 +41,7 @@ func (h *CartHandlerImpl) AddCartItem(c *fiber.Ctx) error {
 }
 
 func (h *CartHandlerImpl) GetCart(c *fiber.Ctx) error {
-	currentUser, _ := c.Locals("CurrentUser").(*entities.User)
+	currentUser := c.Locals("CurrentUser").(*entities.User)
 	if currentUser.Role != "user" {
 		return response.SendStatusForbidden(c, "Access denied: you are admin, not user")
 	}

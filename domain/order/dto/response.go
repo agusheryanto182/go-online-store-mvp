@@ -18,7 +18,7 @@ func FormatOrderResponse(order *entities.Order) *OrderProductResponse {
 		IdOrder:            order.IdOrder,
 		UserId:             order.UserId,
 		GrandTotalQuantity: order.GrandTotalQuantity,
-		TotalAmountPaid:    order.GrandTotalQuantity,
+		TotalAmountPaid:    order.TotalAmountPaid,
 		OrderStatus:        order.OrderStatus,
 		PaymentURL:         order.PaymentURL,
 	}

@@ -20,7 +20,7 @@ func NewProductService(productService product.ProductServiceInterface) product.P
 }
 
 func (h *ProductHandlerImpl) CreateProduct(c *fiber.Ctx) error {
-	currentUser, _ := c.Locals("CurrentUser").(*entities.User)
+	currentUser := c.Locals("CurrentUser").(*entities.User)
 	if currentUser.Role != "admin" {
 		return response.SendStatusUnauthorized(c, "Unauthorized")
 	}
@@ -43,7 +43,7 @@ func (h *ProductHandlerImpl) CreateProduct(c *fiber.Ctx) error {
 }
 
 func (h *ProductHandlerImpl) UpdateProduct(c *fiber.Ctx) error {
-	currentUser, _ := c.Locals("CurrentUser").(*entities.User)
+	currentUser := c.Locals("CurrentUser").(*entities.User)
 	if currentUser.Role != "admin" {
 		return response.SendStatusUnauthorized(c, "Unauthorized")
 	}
@@ -71,7 +71,7 @@ func (h *ProductHandlerImpl) UpdateProduct(c *fiber.Ctx) error {
 }
 
 func (h *ProductHandlerImpl) DeleteProduct(c *fiber.Ctx) error {
-	currentUser, _ := c.Locals("CurrentUser").(*entities.User)
+	currentUser := c.Locals("CurrentUser").(*entities.User)
 	if currentUser.Role != "admin" {
 		return response.SendStatusUnauthorized(c, "Unauthorized")
 	}

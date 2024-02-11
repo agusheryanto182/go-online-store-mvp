@@ -7,3 +7,8 @@ type CreateOrderRequest struct {
 	Quantity  int `json:"quantity" validate:"required"`
 	User      *entities.User
 }
+
+type CreateOrderRequestFromCart struct {
+	CartID int `json:"cart_id" validate:"required"`
+	User   *entities.User
+}

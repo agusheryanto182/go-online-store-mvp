@@ -13,8 +13,10 @@ type OrderRepositoryInterface interface {
 
 type OrderServiceInterface interface {
 	CreateOrderFromProduct(userID int, request *dto.CreateOrderRequest) (*entities.Order, error)
+	CreateOrderFromCart(userID int, request *dto.CreateOrderRequestFromCart) (*entities.Order, error)
 }
 
 type OrderHandlerInterface interface {
 	CreateOrderFromProduct(c *fiber.Ctx) error
+	CreateOrderFromCart(c *fiber.Ctx) error
 }

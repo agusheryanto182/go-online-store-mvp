@@ -71,7 +71,7 @@ func main() {
 	paymentService := sPayment.NewPaymentService(*bootConfig)
 
 	orderRepo := rOrder.NewOrderRepository(DB)
-	orderService := sOrder.NewOrderService(orderRepo, productService, paymentService)
+	orderService := sOrder.NewOrderService(orderRepo, productService, paymentService, cartRepo)
 	orderHandler := hOrder.NewOrderHandler(orderService)
 
 	routes.AuthRoute(app, authHandler)

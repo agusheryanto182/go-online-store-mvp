@@ -22,7 +22,7 @@ func NewCategoryHandler(categoryService category.CategoryServiceInterface) categ
 }
 
 func (h *CategoryHandlerImpl) CreateCategory(c *fiber.Ctx) error {
-	currentUser, _ := c.Locals("CurrentUser").(*entities.User)
+	currentUser := c.Locals("CurrentUser").(*entities.User)
 	if currentUser.Role != "admin" {
 		return response.SendStatusUnauthorized(c, "Unauthorized")
 	}
@@ -60,7 +60,7 @@ func (h *CategoryHandlerImpl) CreateCategory(c *fiber.Ctx) error {
 }
 
 func (h *CategoryHandlerImpl) UpdateCategory(c *fiber.Ctx) error {
-	currentUser, _ := c.Locals("CurrentUser").(*entities.User)
+	currentUser := c.Locals("CurrentUser").(*entities.User)
 	if currentUser.Role != "admin" {
 		return response.SendStatusUnauthorized(c, "Unauthorized")
 	}
@@ -88,7 +88,7 @@ func (h *CategoryHandlerImpl) UpdateCategory(c *fiber.Ctx) error {
 }
 
 func (h *CategoryHandlerImpl) DeleteCategory(c *fiber.Ctx) error {
-	currentUser, _ := c.Locals("CurrentUser").(*entities.User)
+	currentUser := c.Locals("CurrentUser").(*entities.User)
 	if currentUser.Role != "admin" {
 		return response.SendStatusUnauthorized(c, "Unauthorized")
 	}

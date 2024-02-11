@@ -44,4 +44,5 @@ func CartRouter(app *fiber.App, handler cart.CartHandlerInterface, jwtService jw
 func OrderRoute(app *fiber.App, handler order.OrderHandlerInterface, jwtService jwt.IJwt, userService user.UserServiceInterface) {
 	orderGroup := app.Group("api/order")
 	orderGroup.Post("/", middleware.Protected(jwtService, userService), handler.CreateOrderFromProduct)
+	orderGroup.Post("/:cart_id", middleware.Protected(jwtService, userService), handler.CreateOrderFromCart)
 }
