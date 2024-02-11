@@ -56,7 +56,7 @@ func (h *CategoryHandlerImpl) CreateCategory(c *fiber.Ctx) error {
 		return response.SendStatusBadRequest(c, "error to create category : "+err.Error())
 	}
 
-	return response.SendStatusOkWithDataResponse(c, "success to create category", dto.CreateCategoryResponseFormatter(createdCategory))
+	return response.SendStatusCreatedWithDataResponse(c, "success to create category", dto.CreateCategoryResponseFormatter(createdCategory))
 }
 
 func (h *CategoryHandlerImpl) UpdateCategory(c *fiber.Ctx) error {

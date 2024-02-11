@@ -39,7 +39,7 @@ func (h *ProductHandlerImpl) CreateProduct(c *fiber.Ctx) error {
 		return response.SendStatusBadRequest(c, "failed to create product : "+err.Error())
 	}
 
-	return response.SendStatusOkResponse(c, "success to create product")
+	return response.SendStatusCreatedResponse(c, "success to create product")
 }
 
 func (h *ProductHandlerImpl) UpdateProduct(c *fiber.Ctx) error {

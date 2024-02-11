@@ -31,7 +31,7 @@ func (h *AuthHandlerImpl) Register(c *fiber.Ctx) error {
 		return response.SendStatusBadRequest(c, err.Error())
 	}
 
-	return response.SendStatusOkWithDataResponse(c, "register success", newUser)
+	return response.SendStatusCreatedWithDataResponse(c, "register success", newUser)
 }
 
 func (h *AuthHandlerImpl) Login(c *fiber.Ctx) error {

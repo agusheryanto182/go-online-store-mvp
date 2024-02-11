@@ -7,7 +7,7 @@ import (
 	"github.com/agusheryanto182/go-online-store-mvp/domain/cart"
 	"github.com/agusheryanto182/go-online-store-mvp/domain/order"
 	"github.com/agusheryanto182/go-online-store-mvp/domain/order/dto"
-	payment "github.com/agusheryanto182/go-online-store-mvp/domain/payment/service"
+	"github.com/agusheryanto182/go-online-store-mvp/domain/payment"
 	"github.com/agusheryanto182/go-online-store-mvp/domain/product"
 	"github.com/agusheryanto182/go-online-store-mvp/entities"
 )
@@ -15,14 +15,14 @@ import (
 type OrderServiceImpl struct {
 	orderRepository order.OrderRepositoryInterface
 	productService  product.ProductServiceInterface
-	paymentService  payment.Service
+	paymentService  payment.PaymentServiceInterface
 	cartRepository  cart.CartRepositoryInterface
 }
 
 func NewOrderService(
 	orderRepository order.OrderRepositoryInterface,
 	productService product.ProductServiceInterface,
-	paymentService payment.Service,
+	paymentService payment.PaymentServiceInterface,
 	cartRepository cart.CartRepositoryInterface,
 ) order.OrderServiceInterface {
 	return &OrderServiceImpl{

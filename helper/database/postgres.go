@@ -1,6 +1,7 @@
 package database
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/agusheryanto182/go-online-store-mvp/config"
@@ -35,5 +36,25 @@ func TableMigration(db *gorm.DB) {
 		log.Fatal("Migration table is failed", err.Error())
 	} else {
 		log.Info("Migration table is success")
+	}
+
+	var adminUser *entities.User
+	result := db.Where("username = ?", "admin").First(&adminUser)
+	if result.Error != nil && errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		adminUser = &entities.User{
+			Username: "admin",
+			Password: "admin",
+			Role:     "admin",
+		}
+		err := db.Create(&adminUser).Error
+		if err != nil {
+			log.Fatal("Failed to create admin user", err.Error())
+		} else {
+			log.Info("Admin user created successfully")
+		}
+	} else if result.Error != nil {
+		log.Fatal("Failed to find admin user", result.Error.Error())
+	} else {
+		log.Info("Admin user already exists")
 	}
 }

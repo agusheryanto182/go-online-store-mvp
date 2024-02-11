@@ -6,6 +6,7 @@ import (
 	"github.com/agusheryanto182/go-online-store-mvp/config"
 	rUser "github.com/agusheryanto182/go-online-store-mvp/domain/user/repository"
 	sUser "github.com/agusheryanto182/go-online-store-mvp/domain/user/service"
+	"github.com/agusheryanto182/go-online-store-mvp/middleware"
 
 	hAuth "github.com/agusheryanto182/go-online-store-mvp/domain/auth/handler"
 	rAuth "github.com/agusheryanto182/go-online-store-mvp/domain/auth/repository"
@@ -74,10 +75,12 @@ func main() {
 	orderService := sOrder.NewOrderService(orderRepo, productService, paymentService, cartRepo)
 	orderHandler := hOrder.NewOrderHandler(orderService)
 
+	app.Use(middleware.Logging())
+
 	routes.AuthRoute(app, authHandler)
 	routes.CategoryRoute(app, categoryHandler, jwt, userService)
 	routes.ProductRoute(app, productHandler, jwt, userService)
-	routes.CartRouter(app, cartHandler, jwt, userService)
+	routes.CartRoute(app, cartHandler, jwt, userService)
 	routes.OrderRoute(app, orderHandler, jwt, userService)
 
 	addr := fmt.Sprintf(":%d", bootConfig.AppPort)

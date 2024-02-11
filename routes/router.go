@@ -34,7 +34,7 @@ func CategoryRoute(app *fiber.App, handler category.CategoryHandlerInterface, jw
 	categoryGroup.Get("", middleware.Protected(jwtService, userService), handler.GetAllCategory)
 }
 
-func CartRouter(app *fiber.App, handler cart.CartHandlerInterface, jwtService jwt.IJwt, userService user.UserServiceInterface) {
+func CartRoute(app *fiber.App, handler cart.CartHandlerInterface, jwtService jwt.IJwt, userService user.UserServiceInterface) {
 	cartGroup := app.Group("api/cart")
 	cartGroup.Post("/", middleware.Protected(jwtService, userService), handler.AddCartItem)
 	cartGroup.Get("/", middleware.Protected(jwtService, userService), handler.GetCart)
