@@ -36,12 +36,12 @@ func (r *CategoryRepositoryImpl) UpdateCategory(ID int, updateCategory *entities
 }
 
 func (r *CategoryRepositoryImpl) DeleteCategory(ID int) error {
-	product := &entities.Category{}
-	if err := r.DB.Where("id = ?", ID).Error; err != nil {
+	category := &entities.Category{}
+	if err := r.DB.Where("id = ? AND deleted_at is NULL", ID).First(&category).Error; err != nil {
 		return err
 	}
 
-	if err := r.DB.Model(&product).Update("deleted_at", time.Now()).Error; err != nil {
+	if err := r.DB.Model(&category).Update("deleted_at", time.Now()).Error; err != nil {
 		return err
 	}
 	return nil

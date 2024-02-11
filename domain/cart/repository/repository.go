@@ -38,9 +38,9 @@ func (r *CartRepositoryImpl) GetCartByUserId(userId int) (*entities.Cart, error)
 	return carts, nil
 }
 
-func (r *CartRepositoryImpl) GetCartItemByProductID(cartId, productId int) (*entities.CartItem, error) {
+func (r *CartRepositoryImpl) GetCartItemByProductID(cartID, productId int) (*entities.CartItem, error) {
 	carts := entities.CartItem{}
-	if err := r.db.Where("cart_id = ? AND product_id = ?", cartId, productId).First(&carts).Error; err != nil {
+	if err := r.db.Where("id = ? AND product_id = ?", cartID, productId).First(&carts).Error; err != nil {
 		return nil, err
 	}
 	return &carts, nil
@@ -68,4 +68,51 @@ func (r *CartRepositoryImpl) GetCartItemsByCartID(cartId int) ([]*entities.CartI
 		return nil, err
 	}
 	return cartItems, nil
+}
+
+func (r *CartRepositoryImpl) FindCart(userID int) (*entities.Cart, error) {
+	carts := &entities.Cart{}
+	if err := r.db.
+		Preload("CartItems", func(db *gorm.DB) *gorm.DB {
+			return db.Select("id, cart_id, product_id, quantity, total_price").
+				Preload("Product", func(db *gorm.DB) *gorm.DB {
+					return db.Select("id, name, price").
+						Preload("ProductPhotos")
+				})
+		}).Where("user_id = ?", userID).First(&carts).Error; err != nil {
+		return nil, err
+	}
+	return carts, nil
+}
+
+func (r *CartRepositoryImpl) RemoveProductFromCart(userID, productID int) error {
+	var carts entities.Cart
+	if err := r.db.Where("user_id = ?", userID).Preload("CartItems").First(&carts).Error; err != nil {
+		return err
+	}
+
+	var cartItem entities.CartItem
+	for _, item := range carts.CartItems {
+		if item.ProductId == productID {
+			cartItem = *item
+			break
+		}
+	}
+	if cartItem.Id == 0 {
+		return nil
+	}
+	if err := r.db.Delete(&cartItem).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (r *CartRepositoryImpl) IsProductInCart(userID, productID int) bool {
+	var count int64
+	r.db.Model(&entities.CartItem{}).
+		Joins("JOIN carts ON cart_items.cart_id = carts.id").
+		Where("carts.user_id = ? AND cart_items.product_id = ?", userID, productID).
+		Count(&count)
+	return count > 0
 }

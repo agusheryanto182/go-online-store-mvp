@@ -43,7 +43,7 @@ func (h *CategoryHandlerImpl) CreateCategory(c *fiber.Ctx) error {
 
 	uniqueID := time.Now().Format("20060102150405")
 
-	path := fmt.Sprintf("assets/images/%s-%v", uniqueID, file.Filename)
+	path := fmt.Sprintf("assets/images/category/%s-%v", uniqueID, file.Filename)
 
 	if err := c.SaveFile(file, path); err != nil {
 		return response.SendStatusBadRequest(c, "failed to save file images : "+err.Error())
@@ -81,10 +81,10 @@ func (h *CategoryHandlerImpl) UpdateCategory(c *fiber.Ctx) error {
 
 	updatedCategory, err := h.categoryService.UpdateCategory(ID, &input)
 	if err != nil {
-		return response.SendStatusBadRequest(c, "error to create category : "+err.Error())
+		return response.SendStatusBadRequest(c, "error to update category : "+err.Error())
 	}
 
-	return response.SendStatusOkWithDataResponse(c, "success to create category", updatedCategory)
+	return response.SendStatusOkWithDataResponse(c, "success to update category", updatedCategory)
 }
 
 func (h *CategoryHandlerImpl) DeleteCategory(c *fiber.Ctx) error {
@@ -101,11 +101,11 @@ func (h *CategoryHandlerImpl) DeleteCategory(c *fiber.Ctx) error {
 	if err := h.categoryService.DeleteCategory(ID); err != nil {
 		return response.SendStatusBadRequest(c, "failed to delete category : "+err.Error())
 	}
-	return nil
+	return response.SendStatusOkResponse(c, "success to delete category")
 }
 
 func (h *CategoryHandlerImpl) GetAllCategory(c *fiber.Ctx) error {
-	ID, _ := strconv.Atoi(c.Params("id"))
+	ID, _ := strconv.Atoi(c.Query("id"))
 
 	if ID > 0 {
 		category, err := h.categoryService.GetCategoryByID(ID)

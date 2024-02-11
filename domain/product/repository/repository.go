@@ -49,14 +49,6 @@ func (r *ProductRepositoryImpl) DeleteProduct(ID int) error {
 	return nil
 }
 
-func (r *ProductRepositoryImpl) FindAllProducts() ([]*entities.Product, error) {
-	var products []*entities.Product
-	if err := r.DB.Table("products").Where("deleted_at IS NULL").First(&products).Error; err != nil {
-		return nil, err
-	}
-	return products, nil
-}
-
 func (r *ProductRepositoryImpl) FindProductByID(ID int) (*entities.Product, error) {
 	var product *entities.Product
 	if err := r.DB.Table("products").Where("ID = ? AND deleted_at IS NULL", ID).First(&product).Error; err != nil {

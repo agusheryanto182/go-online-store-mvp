@@ -32,7 +32,6 @@ func TableMigration(db *gorm.DB) {
 		entities.Cart{},
 		entities.CartItem{},
 		entities.Order{},
-		entities.OrderDetail{},
 	)
 	if err != nil {
 		log.Fatal("Migration table is failed", err.Error())

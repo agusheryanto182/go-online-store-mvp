@@ -88,27 +88,6 @@ func (h *ProductHandlerImpl) DeleteProduct(c *fiber.Ctx) error {
 	return response.SendStatusOkResponse(c, "success to delete product")
 }
 
-func (h *ProductHandlerImpl) GetAllProducts(c *fiber.Ctx) error {
-	var product *entities.Product
-	var products []*entities.Product
-	var err error
-	ID, _ := strconv.Atoi(c.Query("ID"))
-
-	if ID > 0 {
-		product, err = h.productService.GetProductByID(ID)
-		if err != nil {
-			return response.SendStatusNotFound(c, "failed to get products : "+err.Error())
-		}
-		return response.SendStatusOkWithDataResponse(c, "product founded", product)
-	} else {
-		products, err = h.productService.GetAllProducts()
-		if err != nil {
-			return response.SendStatusNotFound(c, "products is not found : "+err.Error())
-		}
-		return response.SendStatusOkWithDataResponse(c, "products found", products)
-	}
-}
-
 func (h *ProductHandlerImpl) GetProductByCategoryID(c *fiber.Ctx) error {
 	ID, err := strconv.Atoi(c.Params("id"))
 	if err != nil {

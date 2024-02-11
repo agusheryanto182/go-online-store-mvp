@@ -7,8 +7,6 @@ import (
 	rUser "github.com/agusheryanto182/go-online-store-mvp/domain/user/repository"
 	sUser "github.com/agusheryanto182/go-online-store-mvp/domain/user/service"
 
-	// hUser "github.com/agusheryanto182/go-online-store-mvp/domain/user/handler"
-
 	hAuth "github.com/agusheryanto182/go-online-store-mvp/domain/auth/handler"
 	rAuth "github.com/agusheryanto182/go-online-store-mvp/domain/auth/repository"
 	sAuth "github.com/agusheryanto182/go-online-store-mvp/domain/auth/service"
@@ -24,6 +22,12 @@ import (
 	hCart "github.com/agusheryanto182/go-online-store-mvp/domain/cart/handler"
 	rCart "github.com/agusheryanto182/go-online-store-mvp/domain/cart/repository"
 	sCart "github.com/agusheryanto182/go-online-store-mvp/domain/cart/service"
+
+	hOrder "github.com/agusheryanto182/go-online-store-mvp/domain/order/handler"
+	rOrder "github.com/agusheryanto182/go-online-store-mvp/domain/order/repository"
+	sOrder "github.com/agusheryanto182/go-online-store-mvp/domain/order/service"
+
+	sPayment "github.com/agusheryanto182/go-online-store-mvp/domain/payment/service"
 
 	"github.com/agusheryanto182/go-online-store-mvp/helper/database"
 	"github.com/agusheryanto182/go-online-store-mvp/helper/hashing"
@@ -47,7 +51,6 @@ func main() {
 
 	userRepo := rUser.NewUserRepository(DB)
 	userService := sUser.NewUserService(userRepo)
-	// userHandler := hUser.NewUserHandler(userService)
 
 	authRepo := rAuth.NewAuthRepository(DB)
 	authService := sAuth.NewAuthService(authRepo, userService, jwt, hash)
@@ -65,10 +68,17 @@ func main() {
 	cartService := sCart.NewCartService(cartRepo, productService)
 	cartHandler := hCart.NewCartHandler(cartService)
 
+	paymentService := sPayment.NewPaymentService(*bootConfig)
+
+	orderRepo := rOrder.NewOrderRepository(DB)
+	orderService := sOrder.NewOrderService(orderRepo, productService, paymentService)
+	orderHandler := hOrder.NewOrderHandler(orderService)
+
 	routes.AuthRoute(app, authHandler)
 	routes.CategoryRoute(app, categoryHandler, jwt, userService)
 	routes.ProductRoute(app, productHandler, jwt, userService)
 	routes.CartRouter(app, cartHandler, jwt, userService)
+	routes.OrderRoute(app, orderHandler, jwt, userService)
 
 	addr := fmt.Sprintf(":%d", bootConfig.AppPort)
 	if err := app.Listen(addr).Error(); err != addr {

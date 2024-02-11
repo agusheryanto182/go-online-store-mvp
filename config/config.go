@@ -9,9 +9,11 @@ import (
 )
 
 type Config struct {
-	AppPort  int
-	Database database
-	Secret   string
+	AppPort           int
+	Database          database
+	Secret            string
+	ClientKeyMidtrans string
+	ServerKeyMidtrans string
 }
 
 type database struct {
@@ -43,6 +45,14 @@ func loadConfig() *Config {
 
 	if value, found := os.LookupEnv("SECRET"); found {
 		res.Secret = value
+	}
+
+	if value, found := os.LookupEnv("CLIENT"); found {
+		res.ClientKeyMidtrans = value
+	}
+
+	if value, found := os.LookupEnv("SERVER"); found {
+		res.ServerKeyMidtrans = value
 	}
 
 	if value, found := os.LookupEnv("DBHOST"); found {

@@ -84,15 +84,6 @@ func (s *ProductServiceImpl) DeleteProduct(ID int) error {
 	return nil
 }
 
-func (s *ProductServiceImpl) GetAllProducts() ([]*entities.Product, error) {
-	products, err := s.productRepository.FindAllProducts()
-	if err != nil {
-		return nil, errors.New("failed to get all products")
-	}
-
-	return products, nil
-}
-
 func (s *ProductServiceImpl) GetProductByID(ID int) (*entities.Product, error) {
 	product, err := s.productRepository.FindProductByID(ID)
 	if err != nil {
