@@ -22,7 +22,7 @@ This project is a backend API for an online store MVP ordering system created us
 ## Running the Project
 
 1. Make sure Golang is installed on your system.
-2. Create a `.env` file in the project directory, and adjust the Postgres database and Midtrans API configuration.
+2. configuration settings for the database and others according to the .env.example file
 3. Install dependencies using the `go mod tidy` command.
 4. Adjust the Postgres database and Midtrans API configuration in the configuration file.
 5. Run the application with the `go run main.go` command.
