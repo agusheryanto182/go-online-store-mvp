@@ -15,6 +15,7 @@ type CartRepositoryInterface interface {
 	UpdateGrandTotal(cartID, grandTotal int) error
 	GetCartItemsByCartID(cartId int) ([]*entities.CartItem, error)
 	FindCart(userID int) (*entities.Cart, error)
+	RemoveCart(cart *entities.Cart) error
 	RemoveProductFromCart(userID, productID int) error
 	IsProductInCart(userID, productID int) bool
 }

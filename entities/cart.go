@@ -5,7 +5,7 @@ type Cart struct {
 	UserId     int         `gorm:"column:user_id" json:"user_id"`
 	GrandTotal int         `gorm:"column:grand_total" json:"grand_total"`
 	User       *User       `gorm:"foreignKey:UserId" json:"user"`
-	CartItems  []*CartItem `gorm:"foreignKey:CartId" json:"cart_items,omitempty"`
+	CartItems  []*CartItem `gorm:"foreignKey:CartId;constraint:OnDelete:CASCADE" json:"cart_items,omitempty"`
 }
 
 type CartItem struct {

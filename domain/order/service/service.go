@@ -115,6 +115,10 @@ func (s *OrderServiceImpl) CreateOrderFromCart(userID int, request *dto.CreateOr
 		return nil, errors.New("failed to update order")
 	}
 
+	if err := s.cartRepository.RemoveCart(cart); err != nil {
+		return nil, errors.New("failed to remove cart")
+	}
+
 	return newResult, nil
 
 }

@@ -108,6 +108,14 @@ func (r *CartRepositoryImpl) RemoveProductFromCart(userID, productID int) error 
 	return nil
 }
 
+func (r *CartRepositoryImpl) RemoveCart(cart *entities.Cart) error {
+	if err := r.db.Delete(&cart).Error; err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (r *CartRepositoryImpl) IsProductInCart(userID, productID int) bool {
 	var count int64
 	r.db.Model(&entities.CartItem{}).
