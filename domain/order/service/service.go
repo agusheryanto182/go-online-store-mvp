@@ -83,6 +83,10 @@ func (s *OrderServiceImpl) CreateOrderFromCart(userID int, request *dto.CreateOr
 		intQuantity += quantity.Quantity
 	}
 
+	if intQuantity == 0 {
+		return nil, errors.New("you dont have a product on your cart")
+	}
+
 	order.IdOrder = uniqueID
 	order.UserId = userID
 	order.GrandTotalQuantity = intQuantity

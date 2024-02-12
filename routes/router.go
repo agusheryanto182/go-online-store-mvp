@@ -21,7 +21,7 @@ func AuthRoute(app *fiber.App, handler auth.AuthHandlerInterface) {
 func ProductRoute(app *fiber.App, handler product.ProductHandlerInterface, jwtService jwt.IJwt, userService user.UserServiceInterface) {
 	productGroup := app.Group("api/product")
 	productGroup.Post("/", middleware.Protected(jwtService, userService), handler.CreateProduct)
-	productGroup.Put("/:id", middleware.Protected(jwtService, userService), handler.UpdateProduct)
+	productGroup.Patch("/:id", middleware.Protected(jwtService, userService), handler.UpdateProduct)
 	productGroup.Delete("/:id", middleware.Protected(jwtService, userService), handler.DeleteProduct)
 	productGroup.Get("/:id", handler.GetProductByCategoryID)
 }

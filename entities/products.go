@@ -7,7 +7,6 @@ type Product struct {
 	Name        string     `gorm:"column:name" json:"name"`
 	Price       int        `gorm:"column:price" json:"price"`
 	Description string     `gorm:"column:description" json:"description"`
-	Address     string     `gorm:"column:address" json:"address"`
 	CategoryID  int        `gorm:"column:category_id" json:"category_id"`
 	Category    Category   `gorm:"foreignKey:CategoryID" json:"category"`
 	CreatedAt   time.Time  `gorm:"column:created_at;type:TIMESTAMP" json:"created_at"`

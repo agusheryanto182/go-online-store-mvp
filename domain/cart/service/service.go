@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 
 	"github.com/agusheryanto182/go-online-store-mvp/domain/cart"
@@ -103,6 +104,9 @@ func (s *CartServiceImpl) GetCart(userID int) (*entities.Cart, error) {
 
 func (s *CartServiceImpl) RemoveProductFromCart(userID, productID int) error {
 	isProductInCart := s.cartRepository.IsProductInCart(userID, productID)
+	fmt.Println(isProductInCart)
+	fmt.Println(userID)
+	fmt.Println(productID)
 	if !isProductInCart {
 		return errors.New("the product with ID " + strconv.Itoa(productID) + " is not on user")
 	}

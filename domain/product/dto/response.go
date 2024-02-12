@@ -9,8 +9,7 @@ type CreateProductResponse struct {
 	Name        string `json:"name"`
 	Price       int    `json:"price"`
 	Description string `json:"description"`
-	Address     string `json:"address"`
-	Category    string `json:"category"`
+	Category    int    `json:"category_id"`
 }
 
 func GetProductByID(product *entities.Product) CreateProductResponse {
@@ -19,8 +18,7 @@ func GetProductByID(product *entities.Product) CreateProductResponse {
 	response.Name = product.Name
 	response.Price = product.Price
 	response.Description = product.Description
-	response.Address = product.Address
-	response.Category = product.Category.Name
+	response.Category = product.CategoryID
 
 	return response
 }

@@ -6,6 +6,7 @@ import (
 
 	"github.com/agusheryanto182/go-online-store-mvp/config"
 	"github.com/agusheryanto182/go-online-store-mvp/entities"
+	"github.com/agusheryanto182/go-online-store-mvp/helper/hashing"
 	"github.com/gofiber/fiber/v2/log"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -41,9 +42,10 @@ func TableMigration(db *gorm.DB) {
 	var adminUser *entities.User
 	result := db.Where("username = ?", "admin").First(&adminUser)
 	if result.Error != nil && errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		hashed, _ := hashing.NewHash().HashPassword("admin")
 		adminUser = &entities.User{
 			Username: "admin",
-			Password: "admin",
+			Password: hashed,
 			Role:     "admin",
 		}
 		err := db.Create(&adminUser).Error

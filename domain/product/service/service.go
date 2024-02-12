@@ -28,7 +28,6 @@ func (s *ProductServiceImpl) CreateProduct(request *dto.CreateProductRequest) (*
 		Name:        request.Name,
 		Price:       request.Price,
 		Description: request.Description,
-		Address:     request.Address,
 		CategoryID:  request.CategoryID,
 	}
 
@@ -52,10 +51,6 @@ func (s *ProductServiceImpl) UpdateProduct(ID int, request *dto.UpdateProductReq
 
 	if request.Price != 0 {
 		product.Price = request.Price
-	}
-
-	if request.Address != "" {
-		product.Address = request.Address
 	}
 
 	if request.Description != "" {

@@ -1,0 +1,517 @@
+openapi: 3.0.0
+info:
+  title: ONLINE STORE MVP
+  contact: {}
+  version: '1.0'
+servers:
+  - url: http://localhost:8080
+    variables: {}
+paths:
+  /auth/register:
+    post:
+      tags:
+        - AUTH
+      summary: register
+      operationId: register
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/registerrequest'
+                - example:
+                    fullname: testing
+                    username: testing
+                    email: testing@gmail.com
+                    password: testing
+                    password_confirm: testing
+            example:
+              fullname: testing
+              username: testing
+              email: testing@gmail.com
+              password: testing
+              password_confirm: testing
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /auth/login:
+    post:
+      tags:
+        - AUTH
+      summary: login
+      operationId: login
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/loginrequest'
+                - example:
+                    identifier: testing
+                    password: testing
+            example:
+              identifier: testing
+              password: testing
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /category:
+    post:
+      tags:
+        - CATEGORY
+      summary: create category
+      operationId: createcategory
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+                - name
+                - description
+                - image
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: category testing 1
+                description:
+                  type: string
+                  example: category testing 1
+                image:
+                  type: string
+                  format: binary
+        required: false
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    get:
+      tags:
+        - CATEGORY
+      summary: get detail category
+      operationId: getdetailcategory
+      parameters:
+        - name: id
+          in: query
+          description: ''
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: integer
+            format: int32
+            example: 7
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /category/{id}:
+    patch:
+      tags:
+        - CATEGORY
+      summary: update category
+      operationId: updatecategory
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            encoding: {}
+            schema:
+              required:
+                - name
+                - description
+                - image
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: category update
+                description:
+                  type: string
+                  example: deskripsi update
+                image:
+                  type: string
+                  format: binary
+        required: false
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+        - CATEGORY
+      summary: delete category
+      operationId: deletecategory
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /product:
+    post:
+      tags:
+        - PRODUCT
+      summary: create product
+      operationId: createproduct
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/createproductrequest'
+                - example:
+                    name: product testing
+                    price: 20000
+                    description: 'description testing '
+                    category_id: 1
+            example:
+              name: product testing
+              price: 20000
+              description: 'description testing '
+              category_id: 1
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /product/{id}:
+    patch:
+      tags:
+        - PRODUCT
+      summary: update product
+      operationId: updateproduct
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          style: simple
+          schema:
+            type: string
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/updateproductrequest'
+                - example:
+                    name: product testing
+                    price: 20000
+                    description: 'description testing '
+                    category_id: 1
+            example:
+              name: product testing
+              price: 20000
+              description: 'description testing '
+              category_id: 1
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+        - PRODUCT
+      summary: delete product
+      operationId: deleteproduct
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    get:
+      tags:
+        - PRODUCT
+      summary: get list product by category
+      operationId: getlistproductbycategory
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /cart:
+    post:
+      tags:
+        - CART
+      summary: add carts
+      operationId: addcarts
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/addcartsrequest'
+                - example:
+                    product_id: 2
+                    quantity: 2
+            example:
+              product_id: 2
+              quantity: 2
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    get:
+      tags:
+        - CART
+      summary: get carts
+      operationId: getcarts
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /cart/{product_id}:
+    delete:
+      tags:
+        - CART
+      summary: delete product from cart
+      operationId: deleteproductfromcart
+      parameters:
+        - name: product_id
+          in: path
+          description: ''
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /order:
+    post:
+      tags:
+        - ORDER
+      summary: create order from product
+      operationId: createorderfromproduct
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/createorderfromproductrequest'
+                - example:
+                    product_id: 1
+                    quantity: 2
+            example:
+              product_id: 1
+              quantity: 2
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /order/{id}:
+    post:
+      tags:
+        - ORDER
+      summary: create order form cart
+      operationId: createorderformcart
+      parameters:
+        - name: id
+          in: path
+          description: ''
+          required: true
+          style: simple
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+components:
+  schemas:
+    registerrequest:
+      title: registerrequest
+      required:
+        - fullname
+        - username
+        - email
+        - password
+        - password_confirm
+      type: object
+      properties:
+        fullname:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        password_confirm:
+          type: string
+      example:
+        fullname: testing
+        username: testing
+        email: testing@gmail.com
+        password: testing
+        password_confirm: testing
+    loginrequest:
+      title: loginrequest
+      required:
+        - identifier
+        - password
+      type: object
+      properties:
+        identifier:
+          type: string
+        password:
+          type: string
+      example:
+        identifier: testing
+        password: testing
+    createproductrequest:
+      title: createproductrequest
+      required:
+        - name
+        - price
+        - description
+        - category_id
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: integer
+          format: int32
+        description:
+          type: string
+        category_id:
+          type: integer
+          format: int32
+      example:
+        name: product testing
+        price: 20000
+        description: 'description testing '
+        category_id: 1
+    updateproductrequest:
+      title: updateproductrequest
+      required:
+        - name
+        - price
+        - description
+        - category_id
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: integer
+          format: int32
+        description:
+          type: string
+        category_id:
+          type: integer
+          format: int32
+      example:
+        name: product testing
+        price: 20000
+        description: 'description testing '
+        category_id: 1
+    addcartsrequest:
+      title: addcartsrequest
+      required:
+        - product_id
+        - quantity
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int32
+        quantity:
+          type: integer
+          format: int32
+      example:
+        product_id: 2
+        quantity: 2
+    createorderfromproductrequest:
+      title: createorderfromproductrequest
+      required:
+        - product_id
+        - quantity
+      type: object
+      properties:
+        product_id:
+          type: integer
+          format: int32
+        quantity:
+          type: integer
+          format: int32
+      example:
+        product_id: 1
+        quantity: 2
+  securitySchemes:
+    httpBearer:
+      type: http
+      scheme: bearer
+security:
+  - httpBearer: []
+tags:
+  - name: AUTH
+  - name: CATEGORY
+  - name: PRODUCT
+  - name: CART
+  - name: ORDER
