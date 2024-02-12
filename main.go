@@ -43,7 +43,7 @@ func main() {
 		AppName: "Online Store MVP",
 	})
 
-	bootConfig := config.BootConfig()
+	bootConfig := config.NewConfig()
 
 	DB := database.InitialDB(*bootConfig)
 	database.TableMigration(DB)

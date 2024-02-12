@@ -1,88 +1,31 @@
 package config
 
 import (
-	"os"
-	"strconv"
-
 	"github.com/gofiber/fiber/v2/log"
-	"github.com/joho/godotenv"
+	"github.com/joeshaw/envdecode"
 )
 
 type Config struct {
-	AppPort           int
+	AppPort           int `env:"PORT,required"`
 	Database          database
-	Secret            string
-	ClientKeyMidtrans string
-	ServerKeyMidtrans string
+	Secret            string `env:"SECRET,required"`
+	ClientKeyMidtrans string `env:"CLIENT_MIDTRANS,required"`
+	ServerKeyMidtrans string `env:"SERVER_MIDTRANS,required"`
 }
 
 type database struct {
-	DbHost string
-	DbPort int
-	DbUser string
-	DbPass string
-	DbName string
+	DbHost string `env:"DB_HOST,required"`
+	DbPort int    `env:"DB_PORT,required"`
+	DbUser string `env:"DB_USER,required"`
+	DbPass string `env:"DB_PASS,required"`
+	DbName string `env:"DB_NAME,required"`
 }
 
-func loadConfig() *Config {
-	var res = new(Config)
-	_, err := os.Stat(".env")
-	if err == nil {
-		err := godotenv.Load()
-		if err != nil {
-			log.Fatal("Failed to fetch .env file")
-		}
+func NewConfig() *Config {
+	var c Config
+	if err := envdecode.StrictDecode(&c); err != nil {
+		log.Fatalf("Failed to decode: %s", err)
 	}
 
-	if value, found := os.LookupEnv("PORT"); found {
-		port, err := strconv.Atoi(value)
-		if err != nil {
-			log.Fatal("Config : invalid server port", err.Error())
-			return nil
-		}
-		res.AppPort = port
-	}
-
-	if value, found := os.LookupEnv("SECRET"); found {
-		res.Secret = value
-	}
-
-	if value, found := os.LookupEnv("CLIENT"); found {
-		res.ClientKeyMidtrans = value
-	}
-
-	if value, found := os.LookupEnv("SERVER"); found {
-		res.ServerKeyMidtrans = value
-	}
-
-	if value, found := os.LookupEnv("DBHOST"); found {
-		res.Database.DbHost = value
-	}
-
-	if value, found := os.LookupEnv("DBPORT"); found {
-		port, err := strconv.Atoi(value)
-		if err != nil {
-			log.Fatal("Config : invalid db port", err.Error())
-			return nil
-		}
-		res.Database.DbPort = port
-	}
-
-	if value, found := os.LookupEnv("DBUSER"); found {
-		res.Database.DbUser = value
-	}
-
-	if value, found := os.LookupEnv("DBPASS"); found {
-		res.Database.DbPass = value
-	}
-
-	if value, found := os.LookupEnv("DBNAME"); found {
-		res.Database.DbName = value
-	}
-
-	return res
-}
-
-func BootConfig() *Config {
-	return loadConfig()
+	return &c
 }
